@@ -1,6 +1,7 @@
 <h2>Register</h2>
-<form action="">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <input type="password" name="confirmPassword" placeholder="Confirm password">
+<form>
+    <input type="text" name="username" placeholder="Username" ng-model="user.username">
+    <input type="password" name="password" placeholder="Password" ng-model="user.password">
+    <input type="password" name="confirmPassword" placeholder="Confirm password" ng-model="user.confirmPassword">
+    <button ng-click="prepareRegister(user)">Register</button>
 </form>

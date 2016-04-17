@@ -23,7 +23,31 @@ angular.module('issueTracker.userModel', [])
             return deferred.promise;
         }
 
+        function register(user){
+            var deferred = $q.defer();
+
+            var data = {
+                Email: user.username,
+                Password: user.password,
+                ConfirmPassword: user.confirmPassword
+            };
+
+            $http({
+                method: 'POST',
+                url: Base_Url + 'api/Account/Register',
+                data: data
+            })
+                .then(function (success) {
+                    deferred.resolve(success);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        }
+
         return {
-            login: getUserToken
+            login: getUserToken,
+            register: register
         }
     }]);

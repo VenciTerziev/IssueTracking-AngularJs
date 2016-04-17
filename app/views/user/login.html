@@ -1,5 +1,6 @@
 <h2>Login</h2>
-<form action="">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
+<form>
+    <input type="text" name="username" placeholder="username" ng-model="user.username">
+    <input type="password" name="password" placeholder="password" ng-model="user.password">
+    <a href="" ng-controller="HomeController" ng-click="prepareLogin(user)">Login</a>
 </form>

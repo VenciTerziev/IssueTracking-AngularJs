@@ -64,9 +64,27 @@ angular.module('issueTracker.userModel', [])
             return deferred.promise;
         }
 
+        function me(){
+            var deferred = $q.defer();
+
+            $http({
+                method: 'GET',
+                url: Base_Url + 'Users/me',
+                headers: {Authorization: 'Bearer ' + sessionStorage['userToken']}
+            })
+                .then(function (success) {
+                    deferred.resolve(success);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             login: getUserToken,
             register: register,
-            logout: logout
+            logout: logout,
+            me: me
         }
     }]);

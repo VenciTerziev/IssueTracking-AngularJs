@@ -6,7 +6,8 @@ angular.module('issueTracker.projectsModel', [])
         function getProjects(pageSize, pageNumber) {
             var deferred = $q.defer();
 
-            var urlFormated = "projects/?pageSize=" + pageSize + "&pageNumber=" + pageNumber + '&filter=';
+            var urlFormated = "projects/?pageSize=" + pageSize + "&pageNumber=" + pageNumber + '&filter=Lead.Id="'
+                + sessionStorage['userId'] + '"' ;
 
             $http({
                 method: 'GET',

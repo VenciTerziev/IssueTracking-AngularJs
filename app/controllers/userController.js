@@ -21,6 +21,12 @@ angular.module('issueTracker.users', ['ngRoute'])
                     .then(function (success) {
                         sessionStorage['userToken'] = success.data['access_token'];
                         sessionStorage['username'] = success.data['userName'];
+                        authentication.me()
+                            .then(function (success) {
+                                console.log(success);
+                                sessionStorage['userId'] = success.data.Id;
+                            });
+
                         notifications.showSuccess({message: 'Logged in!'});
                         $location.path('/');
                         $window.location.reload();

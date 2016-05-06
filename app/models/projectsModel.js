@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('issueTracker.issuesModel', [])
-    .factory('issues', ['$http', '$q', 'Base_Url', function ($http, $q, Base_Url) {
+angular.module('issueTracker.projectsModel', [])
+    .factory('projects', ['$http', '$q', 'Base_Url', function ($http, $q, Base_Url) {
 
-        function getUserIssues(pageSize, pageNumber, orderBy) {
+        function getProjects(pageSize, pageNumber) {
             var deferred = $q.defer();
 
-            var urlFormated = "Issues/me?pageSize=" + pageSize + "&pageNumber=" + pageNumber+ "&orderBy=" + orderBy;
+            var urlFormated = "projects/?pageSize=" + pageSize + "&pageNumber=" + pageNumber + '&filter=';
 
             $http({
                 method: 'GET',
@@ -23,15 +23,14 @@ angular.module('issueTracker.issuesModel', [])
             return deferred.promise;
         }
 
-        function getProjectIssues(pageSize, pageNumber, projectId) {
+        function getProjectById(id) {
             var deferred = $q.defer();
-
-            var urlFormated = "Issues/?pageSize=" + pageSize + "&pageNumber=" + pageNumber+ "&filter=Project.Id=" + projectId;
 
             $http({
                 method: 'GET',
-                url: Base_Url + urlFormated,
-                headers: {Authorization: 'Bearer ' + sessionStorage['userToken']}
+                url: Base_Url + 'projects/' + id,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization: 'Bearer ' + sessionStorage['userToken']}
             })
                 .then(function (success) {
                     deferred.resolve(success);
@@ -42,8 +41,10 @@ angular.module('issueTracker.issuesModel', [])
             return deferred.promise;
         }
 
+
+
         return {
-            getUserIssues: getUserIssues,
-            getProjectIssues: getProjectIssues
+            getProjects: getProjects,
+            getProjectById: getProjectById
         }
     }]);

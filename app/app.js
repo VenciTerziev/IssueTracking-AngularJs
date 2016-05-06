@@ -8,7 +8,8 @@ angular.module('issueTracker', [
         'issueTracker.users',
         'issueTracker.userModel',
         'issueTracker.projects',
-        'issueTracker.issuesModel'
+        'issueTracker.issuesModel',
+        'issueTracker.projectsModel'
     ])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/', controller: 'MenuController'})

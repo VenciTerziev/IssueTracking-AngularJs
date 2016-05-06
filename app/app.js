@@ -6,21 +6,30 @@ angular.module('issueTracker', [
         'ngNotificationsBar',
         'issueTracker.home',
         'issueTracker.users',
-        'issueTracker.userModel'
+        'issueTracker.userModel',
+        'issueTracker.projects',
+        'issueTracker.issuesModel'
     ])
-
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/'})
+        $routeProvider.otherwise({redirectTo: '/', controller: 'MenuController'})
+    }])
+    .controller('MenuController', ['$scope', function ($scope) {
+        if(!sessionStorage['userToken']){
+            $scope.menu = 'views/home/default/menu.html';
+        } else {
+            $scope.menu = 'views/home/logged/menu.html';
+            $scope.username = sessionStorage['username'];
+        }
     }])
     .config(['notificationsConfigProvider', function (notificationsConfigProvider) {
         notificationsConfigProvider.setAutoHide(true);
 
-        notificationsConfigProvider.setHideDelay(1500);
+        notificationsConfigProvider.setHideDelay(1000);
 
         notificationsConfigProvider.setAcceptHTML(false);
 
         notificationsConfigProvider.setAutoHideAnimation('fadeOutNotifications');
 
-        notificationsConfigProvider.setAutoHideAnimationDelay(1000);
+        notificationsConfigProvider.setAutoHideAnimationDelay(750);
     }])
     .constant('Base_Url', 'http://softuni-issue-tracker.azurewebsites.net/');

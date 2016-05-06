@@ -1,0 +1,57 @@
+<h1>Dashboard!</h1>
+
+<div class="well" style="width: 60%">
+    <h2>Issues</h2>
+    <div ng-if="!haveIssues">
+        <i>No Issues</i>
+    </div>
+    <div class="panel panel-primary" ng-repeat="issue in issues" style="width: 45%; display: inline-block; margin: 5px">
+        <div class="panel panel-heading">{{issue.Title}}</div>
+        <div class="panel panel-body">
+            <p>Project: {{issue.Project.Name}}</p>
+            <p style="height: 60px;">Description: {{issue.Description}}</p>
+            <p>Due Date: {{issue.DueDate}}</p>
+        </div>
+    </div>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item disabled" ng-if="current == 1">
+                <a class="page-link" href="" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+
+            <li class="page-item" ng-if="current != 1">
+                <a class="page-link" href="" aria-label="Previous" ng-click="changePage(current - 1)">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+
+            <div ng-repeat="page in pages">
+                <li class="page-item active" ng-if="page == current">
+                    <a class="page-link" href="" >{{page}}</a>
+                </li>
+
+                <li class="page-item" ng-if="page != current"  >
+                    <a class="page-link" href="" ng-click="changePage(page)" >{{page}}</a>
+                </li>
+            </div>
+
+            <li class="page-item" ng-if="current != total">
+                <a class="page-link" href="" aria-label="Next" ng-click="changePage(current + 1)">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li class="page-item disabled" ng-if="current == total">
+                <a class="page-link" href="" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

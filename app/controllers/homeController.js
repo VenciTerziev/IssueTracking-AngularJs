@@ -10,65 +10,73 @@ angular.module('issueTracker.home', ['ngRoute'])
     }])
 
     .controller('HomeController', [
-        '$scope',
-        'authentication',
-        'notifications',
-        '$location',
-        function($scope, authentication, notifications, $location) {
-            if(!sessionStorage['userToken']){
-                $scope.menu = 'views/home/default/menu.html';
-            } else {
-                $scope.menu = 'views/home/logged/menu.html';
-                $scope.username = sessionStorage['username'];
+        '$rootScope', 'issues', '$scope', '$location',
+        function($rootScope, issues, $scope, $location) {
+            if(!$rootScope.template){
+                $rootScope.template = 'views/home/welcome.html';
             }
 
-            if(!$scope.template){
-                $scope.template = 'views/home/welcome.html';
+            if(sessionStorage['userToken']){
+                loadDashboard(4, 1, 'DueDate desc');
             }
 
-            $scope.home = function () {
-                $scope.template = "views/home/welcome.html";
+            $rootScope.home = function () {
+                if(sessionStorage['userToken']){
+                    $location.path('#/');
+                    loadDashboard(4, 1, 'DueDate desc');
+                } else {
+                    $rootScope.template = "views/home/welcome.html";
+                }
             };
 
-            $scope.login = function() {
-                $scope.template = "views/user/login.html";
+            $rootScope.login = function() {
+                $rootScope.template = "views/user/login.html";
             };
 
-            $scope.register = function() {
-                $scope.template = "views/user/register.html";
+            $rootScope.register = function() {
+                $rootScope.template = "views/user/register.html";
             };
 
-            $scope.logout = function() {
-                sessionStorage.clear();
-                $location.path('/#/');
-                notifications.showSuccess({message: 'Logged out.'})
-            };
-
-            $scope.prepareLogin = function (user) {
-                authentication.login(user)
+            function loadDashboard(pageSize, pageNumber, orderBy){
+                $rootScope.template = 'views/home/logged/dashboard.html';
+                issues.getUserIssues(pageSize, pageNumber, orderBy)
                     .then(function (success) {
-                        sessionStorage['userToken'] = success.data['access_token'];
-                        sessionStorage['username'] = success.data['userName'];
-                        notifications.showSuccess({message: 'Logged in!'});
-                        $location.path('/#/');
-                    }, function (error) {
-                        console.log(error);
-                    })
-             };
+                        if (success.data.Issues.length == 0){
+                            $scope['current'] = 1;
+                            $scope['total'] = 1;
+                            $scope['haveIssues'] = false;
+                        } else {
 
-            $scope.prepareRegister = function (user) {
-                authentication.register(user)
-                    .then(function (success) {
-                        authentication.login(user)
-                            .then(function (loginSuccess) {
-                                sessionStorage['userToken'] = loginSuccess.data['access_token'];
-                                sessionStorage['username'] = loginSuccess.data['userName'];
-                                notifications.showSuccess({message: 'Successfully registered!'})
-                                $location.path('/#/');
-                            })
-                    }, function (error) {
+                            var issues = [];
+                            for (var i = 0; i <  success.data.Issues.length; i++) {
+                                var description = success.data.Issues[i].Description;
+
+                                if(description.length > 75){
+                                    success.data.Issues[i].Description = description.slice(0, 75) + '...';
+                                }
+                                issues.push(success.data.Issues[i]);
+
+                            }
+
+                            $scope['issues'] = issues;
+
+                            var pages = [];
+                            for (var i = 0; i < success.data.TotalPages; i++) {
+                                pages.push(i + 1);
+                            }
+                            $scope['pages'] = pages;
+                            $scope['current'] = pageNumber;
+                            $scope['total'] = success.data.TotalPages;
+                            $scope['haveIssues'] = true;
+                        }
+
+                    }, function(error){
                         console.log(error);
-                    })
+                    });
+            }
+
+            $scope.changePage = function (page) {
+                loadDashboard(4, page, 'DueDate desc');
             }
         }
-        ]);
+    ]);

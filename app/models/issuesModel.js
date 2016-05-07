@@ -42,8 +42,27 @@ angular.module('issueTracker.issuesModel', [])
             return deferred.promise;
         }
 
+        function addIssue(issue) {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: Base_Url + 'Issues',
+                headers: {Authorization: 'Bearer ' + sessionStorage['userToken']},
+                data: issue
+            })
+                .then(function (success) {
+                    deferred.resolve(success);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             getUserIssues: getUserIssues,
-            getProjectIssues: getProjectIssues
+            getProjectIssues: getProjectIssues,
+            addIssue: addIssue
         }
     }]);

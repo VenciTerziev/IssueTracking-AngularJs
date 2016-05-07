@@ -3,13 +3,15 @@
 // Declare app level module which depends on views, and components
 angular.module('issueTracker', [
         'ngRoute',
+        'rt.select2',
         'ngNotificationsBar',
         'issueTracker.home',
         'issueTracker.users',
         'issueTracker.userModel',
         'issueTracker.projects',
         'issueTracker.issuesModel',
-        'issueTracker.projectsModel'
+        'issueTracker.projectsModel',
+        'issueTracker.issuesController'
     ])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/', controller: 'MenuController'})
@@ -33,4 +35,17 @@ angular.module('issueTracker', [
 
         notificationsConfigProvider.setAutoHideAnimationDelay(750);
     }])
-    .constant('Base_Url', 'http://softuni-issue-tracker.azurewebsites.net/');
+    .constant('Base_Url', 'http://softuni-issue-tracker.azurewebsites.net/')
+    .filter('orderObjectBy', function() {
+        return function(items, field, reverse) {
+            var filtered = [];
+            angular.forEach(items, function(item) {
+                filtered.push(item);
+            });
+            filtered.sort(function (a, b) {
+                return (a[field] > b[field] ? 1 : -1);
+            });
+            if(reverse) filtered.reverse();
+            return filtered;
+        };
+    });

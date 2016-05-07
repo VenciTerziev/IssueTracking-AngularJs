@@ -3,7 +3,10 @@
 <div class="well">
     <div class="panel panel-primary" ng-repeat="project in projects" style="width: 24%; display: inline-block; margin: 5px">
         <div class="panel panel-heading">{{project.Name}}</div>
-        <div class="panel panel-body"><a href="" class="btn btn-success" ng-click="showProject(project.Id)">View</a></div>
+        <div class="panel panel-body">
+            <a href="" class="btn btn-success" ng-click="showProject(project.Id)">View</a>
+            <a href="/app/#/projects/{{project.Id}}/add-issue" class="btn btn-success">Add Issue</a>
+        </div>
     </div>
 
     <nav>

@@ -1,7 +1,44 @@
-<h2>Register</h2>
-<form>
-    <input type="text" name="username" placeholder="Username" ng-model="user.username">
-    <input type="password" name="password" placeholder="Password" ng-model="user.password">
-    <input type="password" name="confirmPassword" placeholder="Confirm password" ng-model="user.confirmPassword">
-    <button ng-controller="UsersController" ng-click="prepareRegister(user)">Register</button>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Register</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Username</label>
+
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" name="email" ng-model="user.username" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Password</label>
+
+                            <div class="col-md-6">
+                                <input type="password" class="form-control" name="password" ng-model="user.password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Confirm Password</label>
+
+                            <div class="col-md-6">
+                                <input type="password" class="form-control" name="password" ng-model="user.confirmPassword">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button ng-controller="UsersController" type="submit" class="btn btn-primary" ng-click="prepareRegister(user)">
+                                    <i class="fa fa-btn fa-sign-up"></i>Register
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

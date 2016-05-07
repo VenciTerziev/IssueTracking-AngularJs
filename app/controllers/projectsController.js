@@ -106,8 +106,8 @@ angular.module('issueTracker.projects', ['ngRoute'])
             }
     }])
 
-    .controller('EditProjectController', ['$scope', 'projects', '$routeParams' , '$location',
-        function ($scope, projects, $routeParams, $location) {
+    .controller('EditProjectController', ['$scope', 'projects', '$routeParams' , '$location', 'notifications',
+        function ($scope, projects, $routeParams, $location, notifications) {
             if (!sessionStorage.hasOwnProperty('userToken')) {
                 $location.path('/#/');
             } else {
@@ -131,6 +131,9 @@ angular.module('issueTracker.projects', ['ngRoute'])
                     });
 
                 $scope.editProject = function (project) {
+                    var oldLabels = project.Labels;
+                    var oldPriorities = project.Priorities;
+
                     var labels = project.Labels.split(', ');
                     for (var i = 0; i < labels.length; i++) {
                         labels[i] = {Name: labels[i]};
@@ -147,9 +150,14 @@ angular.module('issueTracker.projects', ['ngRoute'])
                     delete project.Lead;
                     projects.editProject($routeParams['id'], project)
                         .then(function (success) {
-                            $location.path('/projects/' + $routeParams['id'])
+                            $location.path('/projects/' + $routeParams['id']);
+                            notifications.showSuccess('Project edited successfully!');
                         }, function (error) {
                             console.log(error);
+                            project.Labels = oldLabels;
+                            project.Priorities = oldPriorities;
+                                notifications.showError(error.data.Message);
+
                         });
                 }
             }

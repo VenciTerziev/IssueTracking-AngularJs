@@ -10,8 +10,8 @@ angular.module('issueTracker.issuesController', ['ngRoute'])
     }])
 
     .controller('AddIssueController', [
-        'issues', '$scope', '$routeParams', 'projects', 'authentication','$location',
-        function(issues, $scope, $routeParams, projects, authentication, $location) {
+        'issues', '$scope', '$routeParams', 'projects', 'authentication','$location', 'notifications',
+        function(issues, $scope, $routeParams, projects, authentication, $location, notifications) {
             if (!sessionStorage.hasOwnProperty('userToken')) {
                 $location.path('/#/');
             } else {
@@ -55,8 +55,12 @@ angular.module('issueTracker.issuesController', ['ngRoute'])
                     issues.addIssue(issue)
                         .then(function (success) {
                             $location.path('/projects/' + $routeParams['id'])
+                            notifications.showSuccess('Issue added successfully!')
                         }, function (error) {
-                            console.log(error);
+                            var errors = error.data.ModelState;
+                            for(var e in errors){
+                                notifications.showError(errors[e][0]);
+                            }
                         })
                 }
             }

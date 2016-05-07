@@ -83,7 +83,10 @@ angular.module('issueTracker.users', ['ngRoute'])
                             $scope.password.NewPassword = "";
                             $scope.password.ConfirmPassword = "";
                         }, function (error) {
-                            console.log(error);
+                            var errors = error.data.ModelState;
+                            for(var e in errors){
+                                notifications.showError(errors[e][0]);
+                            }
                         });
                 }
             }

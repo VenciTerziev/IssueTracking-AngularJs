@@ -1,6 +1,6 @@
 <h1>Project Page</h1>
 
-<div class="well" style="display: inline-flex; ">
+<div class="well" style="display: inline-flex; width: 100%">
     <div style="width: 35%; margin-right: 60px">
         <h1>{{project.Name}}</h1>
         <p><strong>Description:</strong> {{project.Description}}</p>
@@ -28,7 +28,7 @@
                 <td>{{issue.Title}}</td>
                 <td>{{issue.Description}}</td>
                 <td>{{issue.DueDate}}</td>
-                <td>{{issue.Author.Username}}</td>
+                <td>{{issue.Assignee.Username}}</td>
             </tr>
             </tbody>
         </table>

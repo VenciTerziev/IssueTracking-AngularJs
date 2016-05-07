@@ -42,10 +42,27 @@ angular.module('issueTracker.projectsModel', [])
             return deferred.promise;
         }
 
+        function editProject(id, project) {
+            var deferred = $q.defer();
 
+            $http({
+                method: 'PUT',
+                url: Base_Url + 'projects/' + id,
+                headers: {Authorization: 'Bearer ' + sessionStorage['userToken']},
+                data: project
+            })
+                .then(function (success) {
+                    deferred.resolve(success);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        }
 
         return {
             getProjects: getProjects,
-            getProjectById: getProjectById
+            getProjectById: getProjectById,
+            editProject: editProject
         }
     }]);

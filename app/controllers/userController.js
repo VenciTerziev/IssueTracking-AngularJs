@@ -68,6 +68,11 @@ angular.module('issueTracker.users', ['ngRoute'])
             };
         }
     ])
-    .controller('ChangePasswordController', ['$scope', function ($scope) {
-        $scope.username = sessionStorage['username'];
+    .controller('ChangePasswordController', ['$scope', '$location',
+        function ($scope, $location) {
+            if (!sessionStorage.hasOwnProperty('userToken')) {
+                $location.path('/#/');
+            } else {
+                $scope.username = sessionStorage['username'];
+            }
     }]);

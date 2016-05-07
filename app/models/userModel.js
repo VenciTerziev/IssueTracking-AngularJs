@@ -98,11 +98,30 @@ angular.module('issueTracker.userModel', [])
             return deferred.promise;
         }
 
+        function changePassword(password) {
+            var deferred = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: Base_Url + 'api/Account/ChangePassword',
+                headers: {Authorization: 'Bearer ' + sessionStorage['userToken']},
+                data: password
+            })
+                .then(function (success) {
+                    deferred.resolve(success);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             login: getUserToken,
             register: register,
             logout: logout,
             me: me,
-            all: all
+            all: all,
+            changePassword: changePassword
         }
     }]);

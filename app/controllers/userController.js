@@ -68,11 +68,23 @@ angular.module('issueTracker.users', ['ngRoute'])
             };
         }
     ])
-    .controller('ChangePasswordController', ['$scope', '$location',
-        function ($scope, $location) {
+    .controller('ChangePasswordController', ['$scope', '$location', 'authentication', 'notifications',
+        function ($scope, $location, authentication, notifications) {
             if (!sessionStorage.hasOwnProperty('userToken')) {
                 $location.path('/#/');
             } else {
                 $scope.username = sessionStorage['username'];
+
+                $scope.changePassword = function (password) {
+                    authentication.changePassword(password)
+                        .then(function (success) {
+                            notifications.showSuccess({message: "Password changed successfully!"});
+
+                            $scope.password.NewPassword = "";
+                            $scope.password.ConfirmPassword = "";
+                        }, function (error) {
+                            console.log(error);
+                        });
+                }
             }
     }]);
